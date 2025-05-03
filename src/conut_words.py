@@ -2,6 +2,7 @@ import argparse
 import re
 from collections import Counter
 import string
+import pandas as pd
 
 def strip_latex_commands(text):
     # LaTeXコマンド（\command{...}や\command）を除去
@@ -67,8 +68,17 @@ def main():
     counter = count_word_frequencies(lines)
 
     print("\n📊 単語の出現頻度:")
+
+    # CSVファイルに保存
+    with open('word_counts.csv', 'w', newline='', encoding='utf-8') as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerow(['word', 'count'])  # ヘッダー
+        writer.writerows(counter.most_common())
+
+    # Display results
     for word, freq in counter.most_common():
         print(f"{word}: {freq}")
+    
 
 if __name__ == "__main__":
     main()
